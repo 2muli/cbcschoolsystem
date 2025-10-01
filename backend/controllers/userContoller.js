@@ -1,5 +1,19 @@
 import db from "../connectDb.js";
 
+export const login=async(req,res)=>{
+    try{
+        const {email,password}=req.body;
+        const q=`SELECT * FROM users WHERE email=? AND password=?`;
+        db.query(q,[email,password],async(err,dat)=>{
+            if(err) return res.json({message:err});
+            if(dat.length === 0) return res.json({message:"No users found"});
+            return res.json({message:dat});
+        })
+    }catch(err){
+        return res.json({message:err});
+    }
+}
+
 export const getAllUsers=async(req,res)=>{
     try{
    const q=`SELECT * FROM users`;
